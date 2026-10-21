@@ -1,0 +1,659 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#08090b">
+<meta name="description" content="NAVI — The Golden Era 2021. Интерактивный музей чемпионского состава CS:GO.">
+<title>NAVI 2021 — The Golden Era</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --bg:#08090b; --panel:#111317; --panel2:#17191e;
+  --yellow:#fff000; --gold:#d6c900; --white:#f5f5f5;
+  --muted:#92949b; --line:rgba(255,255,255,.12);
+  --display:'Barlow Condensed',Impact,sans-serif;
+  --body:'Inter',Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{margin:0;background:var(--bg);color:var(--white);font-family:var(--body);overflow-x:hidden}
+body.modal-open{overflow:hidden}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+button,a{-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible{outline:2px solid var(--yellow);outline-offset:4px}
+::selection{background:var(--yellow);color:#08090b}
+.progress{position:fixed;z-index:1000;top:0;left:0;height:2px;width:0;background:var(--yellow)}
+.noise{position:fixed;inset:0;pointer-events:none;z-index:50;opacity:.12;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E")}
+.container{width:min(1240px,calc(100% - 64px));margin:auto}
+.section{padding:120px 0;position:relative}
+.eyebrow{font-size:10px;font-weight:800;letter-spacing:3px;color:var(--yellow);text-transform:uppercase;display:flex;align-items:center;gap:12px}
+.eyebrow:before{content:"";height:1px;width:30px;background:var(--yellow)}
+h1,h2,h3,p{margin-top:0}
+h2{font:800 clamp(42px,6vw,78px)/.94 var(--display);letter-spacing:-1.5px;text-transform:uppercase;margin:20px 0}
+.section-intro{color:var(--muted);font-size:14px;line-height:1.8;max-width:580px}
+.yellow{color:var(--yellow)}
+.mono{font:600 11px var(--body);letter-spacing:1.8px;color:var(--muted)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:50px;padding:0 22px;border:1px solid var(--yellow);background:var(--yellow);color:#090a0c;font-size:11px;font-weight:900;letter-spacing:1.2px;text-transform:uppercase;cursor:pointer;transition:.25s}
+.btn:hover{background:#fff;transform:translateY(-2px);border-color:#fff}
+.btn.secondary{background:transparent;color:white;border-color:var(--line)}
+.btn.secondary:hover{border-color:var(--yellow);color:var(--yellow);background:rgba(255,240,0,.04)}
+.btn .arrow{font-size:18px}
+header{position:fixed;top:2px;left:0;right:0;z-index:100;height:76px;border-bottom:1px solid transparent;transition:.3s;background:linear-gradient(180deg,rgba(8,9,11,.82),transparent)}
+header.scrolled{background:rgba(8,9,11,.88);backdrop-filter:blur(18px);border-color:var(--line)}
+.nav{height:100%;display:flex;align-items:center;justify-content:space-between;gap:25px}
+.brand{display:flex;align-items:center;gap:11px;font-weight:900;font-size:14px;letter-spacing:1.2px}
+.brand-mark{width:34px;height:34px;display:grid;place-items:center;background:var(--yellow);color:#08090b;font:900 15px var(--display);clip-path:polygon(0 0,100% 0,100% 72%,72% 100%,0 100%)}
+.brand small{display:block;color:var(--muted);font-size:8px;letter-spacing:2.2px;margin-top:4px}
+.nav-links{display:flex;align-items:center;gap:30px}
+.nav-links a{font-size:10px;font-weight:800;letter-spacing:1px;color:#b8bac0;transition:.2s}
+.nav-links a:hover,.nav-links a.active{color:var(--yellow)}
+.nav-year{font:800 23px var(--display);color:var(--yellow)}
+.menu-toggle{display:none;background:none;border:1px solid var(--line);color:white;width:42px;height:42px;font-size:20px}
+.hero{min-height:780px;height:100svh;max-height:1080px;display:flex;align-items:center;position:relative;overflow:hidden;border-bottom:1px solid var(--line);background:radial-gradient(ellipse at 72% 46%,rgba(255,240,0,.10),transparent 34%),radial-gradient(ellipse at 85% 70%,rgba(126,108,0,.12),transparent 35%),linear-gradient(110deg,#08090b 10%,#101114 65%,#08090b)}
+.hero:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#08090b 0%,rgba(8,9,11,.95) 28%,rgba(8,9,11,.38) 70%,#08090b 100%),repeating-linear-gradient(0deg,transparent 0 79px,rgba(255,255,255,.035) 80px),repeating-linear-gradient(90deg,transparent 0 79px,rgba(255,255,255,.035) 80px);pointer-events:none}
+.hero:after{content:"";position:absolute;right:-10%;top:4%;width:65%;height:90%;border:1px solid rgba(255,240,0,.14);transform:skewY(-20deg);box-shadow:0 0 90px rgba(255,240,0,.04) inset;pointer-events:none}
+.hero-inner{position:relative;z-index:2;padding-top:65px}
+.hero-watermark{position:absolute;right:-3%;top:14%;font:900 clamp(180px,30vw,450px)/.8 var(--display);color:rgba(255,255,255,.025);letter-spacing:-.07em;pointer-events:none}
+.hero-visual{position:absolute;z-index:1;right:7%;top:16%;width:min(49%,650px);height:70%;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.hero-orbit{position:absolute;width:82%;aspect-ratio:1;border:1px solid rgba(255,240,0,.25);border-radius:50%;box-shadow:0 0 100px rgba(255,240,0,.05),inset 0 0 80px rgba(255,240,0,.04);animation:orbit 32s linear infinite}
+.hero-orbit:before,.hero-orbit:after{content:"";position:absolute;border:1px dashed rgba(255,255,255,.16);border-radius:50%;inset:9%}
+.hero-orbit:after{inset:20%;border-style:solid;border-color:rgba(255,240,0,.10)}
+.hero-emblem{position:relative;z-index:1;width:48%;aspect-ratio:1;display:grid;place-items:center;transform:rotate(-8deg);filter:drop-shadow(0 0 55px rgba(255,240,0,.13))}
+.hero-emblem svg{width:100%;height:100%}
+.hero-glow{position:absolute;inset:0;background:linear-gradient(110deg,transparent 40%,rgba(255,240,0,.09) 50%,transparent 60%);transform:translateX(-100%);animation:light-sweep 7s ease-in-out infinite}
+.hero-copy{max-width:690px;position:relative;z-index:3}
+.hero-label{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--line);background:rgba(255,255,255,.025);padding:10px 13px;font-size:10px;letter-spacing:2px;color:#c5c6ca}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--yellow);box-shadow:0 0 12px var(--yellow)}
+.hero h1{font:900 clamp(76px,12vw,164px)/.76 var(--display);letter-spacing:-.035em;margin:35px 0 25px;text-transform:uppercase}
+.hero h1 span{display:block}
+.hero h1 .outline{color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.72);padding-left:clamp(15px,5vw,75px)}
+.hero-sub{font-size:clamp(14px,1.5vw,17px);line-height:1.8;color:#b6b8be;max-width:410px;margin-bottom:29px}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+.hero-index{position:absolute;bottom:36px;left:0;right:0;z-index:3;display:flex;justify-content:space-between;align-items:center;gap:20px}
+.hero-index .left,.hero-index .right{display:flex;align-items:center;gap:15px}
+.hero-index .line{width:45px;height:1px;background:var(--yellow)}
+.scroll-cue{position:absolute;bottom:110px;right:4%;z-index:3;writing-mode:vertical-rl;font-size:9px;letter-spacing:3px;color:var(--muted);display:flex;gap:15px;align-items:center}
+.scroll-cue:after{content:"";width:1px;height:50px;background:linear-gradient(var(--yellow),transparent)}
+.hero-stats{display:flex;gap:35px;margin-top:48px}
+.hero-stat strong{display:block;font:800 35px var(--display);color:var(--yellow)}
+.hero-stat span{font-size:9px;color:var(--muted);letter-spacing:1.5px}
+@keyframes orbit{to{transform:rotate(360deg)}}
+@keyframes light-sweep{0%,65%{transform:translateX(-100%)}85%,100%{transform:translateX(100%)}}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .75s ease,transform .75s ease}
+.reveal.visible{opacity:1;transform:none}
+.section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:35px;margin-bottom:55px}
+.section-number{font:800 100px/.8 var(--display);color:rgba(255,255,255,.055)}
+.history{background:linear-gradient(180deg,#0a0b0d,#0d0f12)}
+.history-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:70px;align-items:start}
+.history-big{font:900 clamp(100px,16vw,190px)/.78 var(--display);letter-spacing:-.05em;color:var(--yellow)}
+.history-big span{display:block;font-size:.31em;letter-spacing:.04em;color:white;margin-top:20px}
+.history-copy{padding-top:10px}
+.history-copy p{color:#b4b6bd;font-size:14px;line-height:1.9}
+.fact-strip{display:grid;grid-template-columns:repeat(3,1fr);margin-top:60px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.fact{padding:26px 20px 26px 0;border-right:1px solid var(--line)}
+.fact:not(:first-child){padding-left:25px}
+.fact:last-child{border:0}
+.fact strong{font:800 36px var(--display);display:block;color:var(--yellow)}
+.fact span{font-size:10px;line-height:1.6;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+.milestones{margin-top:80px;position:relative}
+.milestones:before{content:"";position:absolute;top:9px;left:0;right:0;height:1px;background:var(--line)}
+.milestone-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:25px}
+.milestone{position:relative;padding-top:32px}
+.milestone:before{content:"";position:absolute;top:4px;left:0;width:11px;height:11px;background:var(--yellow);border:3px solid var(--bg);box-shadow:0 0 0 1px var(--yellow)}
+.milestone time{font-size:10px;letter-spacing:1px;color:var(--yellow)}
+.milestone h3{font:700 22px var(--display);text-transform:uppercase;margin:12px 0 8px}
+.milestone p{font-size:12px;line-height:1.7;color:var(--muted)}
+.roster{overflow:hidden}
+.roster:before{content:"";position:absolute;right:-150px;top:5%;width:450px;height:450px;border:1px solid rgba(255,240,0,.06);border-radius:50%;box-shadow:0 0 0 70px rgba(255,255,255,.012),0 0 0 140px rgba(255,255,255,.008);pointer-events:none}
+.roster-topline{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:15px;margin-bottom:24px}
+.roster-topline span{font-size:9px;letter-spacing:2px;color:var(--muted)}
+.roster-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.player-card{position:relative;min-height:480px;height:clamp(400px,42vw,540px);overflow:hidden;border:1px solid var(--line);background:linear-gradient(180deg,#1a1c21,#0d0e11);cursor:pointer;transition:border-color .3s,transform .3s}
+.player-card:hover,.player-card:focus-visible{border-color:var(--yellow);transform:translateY(-6px)}
+.player-card:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 38%,var(--glow,rgba(255,240,0,.18)),transparent 52%);opacity:.75;transition:opacity .3s}
+.player-card:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 35%,rgba(8,9,11,.55) 62%,#08090b 100%)}
+.player-portrait{position:absolute;inset:8% 0 14%;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.player-portrait img{width:100%;height:100%;object-fit:cover;object-position:center top;opacity:.86;mix-blend-mode:screen;filter:grayscale(1) contrast(1.1);transition:transform .5s,filter .5s,opacity .5s}
+.player-card:hover .player-portrait img{transform:scale(1.06);filter:grayscale(.2) contrast(1.1);opacity:1}
+.portrait-placeholder{width:72%;height:88%;position:relative;display:flex;align-items:center;justify-content:center;font:900 clamp(65px,9vw,120px)/.8 var(--display);color:rgba(255,255,255,.10);border-bottom:1px solid rgba(255,240,0,.35)}
+.portrait-placeholder:before{content:"";position:absolute;width:72%;height:56%;top:7%;border:1px solid rgba(255,255,255,.10);border-radius:48% 48% 20% 20%;background:linear-gradient(145deg,rgba(255,255,255,.07),transparent)}
+.portrait-placeholder:after{content:"";position:absolute;bottom:0;left:3%;right:3%;height:55%;border:1px solid rgba(255,255,255,.09);border-bottom:0;border-radius:45% 45% 0 0;background:linear-gradient(180deg,rgba(255,240,0,.06),transparent)}
+.player-no{position:absolute;top:18px;left:17px;z-index:2;font:800 35px var(--display);color:rgba(255,255,255,.35)}
+.player-role{position:absolute;z-index:2;top:27px;right:14px;font-size:8px;letter-spacing:1.3px;writing-mode:vertical-rl;color:var(--yellow)}
+.player-info{position:absolute;z-index:3;bottom:0;left:0;right:0;padding:24px 17px 20px}
+.player-info .small{font-size:9px;letter-spacing:1.4px;color:var(--yellow);text-transform:uppercase}
+.player-info h3{font:900 clamp(29px,3.4vw,46px)/.95 var(--display);margin:9px 0 8px;text-transform:uppercase;overflow-wrap:anywhere}
+.player-info p{font-size:10px;color:#b3b5bb;margin:0 0 18px}
+.card-open{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding-top:13px;font-size:9px;font-weight:800;letter-spacing:1px}
+.card-open span:last-child{color:var(--yellow);font-size:18px}
+.roster-note{margin-top:25px;color:var(--muted);font-size:11px;line-height:1.7}
+.timeline-section{background:#0d0f12;overflow:hidden}
+.timeline-track{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-top:60px}
+.timeline-track:before{content:"";position:absolute;top:22px;left:5%;right:5%;height:1px;background:linear-gradient(90deg,var(--yellow),rgba(255,240,0,.12))}
+.stage{position:relative;text-align:left;padding:0;background:transparent;color:white;border:0;cursor:pointer}
+.stage-marker{width:44px;height:44px;display:grid;place-items:center;background:#0d0f12;border:1px solid var(--line);font:800 16px var(--display);color:var(--yellow);position:relative;z-index:1;transition:.25s}
+.stage.active .stage-marker,.stage:hover .stage-marker{background:var(--yellow);color:#08090b;border-color:var(--yellow);box-shadow:0 0 30px rgba(255,240,0,.15)}
+.stage small{display:block;color:var(--muted);font-size:9px;letter-spacing:1.5px;margin-top:20px}
+.stage h3{font:800 24px var(--display);text-transform:uppercase;margin:8px 0}
+.stage p{font-size:12px;color:var(--muted);line-height:1.7;max-width:280px}
+.stage-detail{margin-top:40px;display:grid;grid-template-columns:1fr auto;gap:30px;align-items:center;border:1px solid var(--line);padding:30px;background:linear-gradient(100deg,rgba(255,240,0,.07),transparent 55%)}
+.stage-detail h3{font:800 32px var(--display);margin:10px 0}
+.stage-detail p{font-size:12px;color:var(--muted);line-height:1.8;max-width:680px;margin-bottom:0}
+.score{font:900 clamp(48px,7vw,76px)/1 var(--display);white-space:nowrap;color:var(--yellow)}
+.final-card{margin-top:25px;position:relative;padding:clamp(25px,5vw,55px);background:linear-gradient(110deg,#1b1d20,#0d0f12);border:1px solid rgba(255,240,0,.25);overflow:hidden}
+.final-card:after{content:"2021";position:absolute;right:-20px;bottom:-55px;font:900 190px/.8 var(--display);color:rgba(255,255,255,.025);pointer-events:none}
+.final-label{font-size:10px;letter-spacing:2px;color:var(--yellow)}
+.final-match{display:flex;align-items:center;justify-content:center;gap:clamp(20px,6vw,80px);margin:35px 0}
+.team{font:900 clamp(28px,5vw,56px)/1 var(--display);text-transform:uppercase}
+.team span{display:block;font:600 9px var(--body);letter-spacing:2px;color:var(--muted);margin-top:9px}
+.vs{font:700 18px var(--display);color:var(--muted)}
+.final-score{font:900 clamp(46px,8vw,90px)/1 var(--display);color:var(--yellow)}
+.final-foot{font-size:11px;color:var(--muted);line-height:1.8}
+.legacy{min-height:520px;display:flex;align-items:center;overflow:hidden;background:radial-gradient(ellipse at 70% 50%,rgba(255,240,0,.1),transparent 40%),#08090b}
+.legacy:after{content:"NAVI";position:absolute;right:-3%;top:16%;font:900 clamp(150px,30vw,400px)/.8 var(--display);letter-spacing:-.08em;color:rgba(255,255,255,.025);pointer-events:none}
+.legacy-content{position:relative;z-index:1;max-width:850px}
+.legacy h2{font-size:clamp(48px,8vw,100px)}
+.legacy p{max-width:560px;font-size:14px;line-height:1.9;color:var(--muted)}
+.sources{border-top:1px solid var(--line);padding:28px 0 40px}
+.sources summary{cursor:pointer;color:var(--muted);font-size:11px;letter-spacing:1.5px}
+.source-links{display:flex;gap:15px;flex-wrap:wrap;margin-top:18px}
+.source-links a{font-size:11px;color:#c3c5cb;border-bottom:1px solid var(--line);padding-bottom:5px}
+.source-links a:hover{color:var(--yellow);border-color:var(--yellow)}
+footer{border-top:1px solid var(--line);padding:24px 0 35px;color:var(--muted);font-size:10px}
+.footer-inner{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+footer strong{color:white}
+.modal{position:fixed;inset:0;z-index:500;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.82);backdrop-filter:blur(16px)}
+.modal.open{display:flex}
+.modal-panel{position:relative;width:min(1000px,100%);max-height:min(850px,90vh);overflow:auto;border:1px solid rgba(255,240,0,.32);background:#0b0c0f;box-shadow:0 30px 120px #000;animation:modal-in .25s ease}
+@keyframes modal-in{from{opacity:0;transform:translateY(15px) scale(.99)}to{opacity:1;transform:none}}
+.modal-close{position:sticky;top:12px;float:right;z-index:5;margin:12px 12px -50px 0;width:38px;height:38px;border:1px solid var(--line);background:#101115;color:white;font-size:20px;cursor:pointer}
+.profile-hero{min-height:330px;position:relative;display:flex;align-items:flex-end;padding:35px;overflow:hidden;background:radial-gradient(ellipse at 70% 40%,rgba(255,240,0,.15),transparent 45%),linear-gradient(110deg,#111317,#08090b)}
+.profile-hero:after{content:attr(data-number);position:absolute;right:3%;bottom:-55px;font:900 260px/.8 var(--display);color:rgba(255,255,255,.035)}
+.profile-tag{position:absolute;top:28px;left:35px;font-size:9px;letter-spacing:2px;color:var(--yellow)}
+.profile-hero h2{position:relative;z-index:1;font-size:clamp(60px,12vw,130px);margin:0}
+.profile-hero .full-name{position:relative;z-index:1;color:#c1c3c9;font-size:12px;margin-top:8px}
+.profile-body{padding:30px 35px 35px}
+.profile-body h3{font:800 24px var(--display);text-transform:uppercase;margin:25px 0 12px}
+.profile-body p{color:#b8bac0;font-size:13px;line-height:1.9}
+.profile-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.profile-tags span{border:1px solid var(--line);padding:9px 11px;font-size:9px;letter-spacing:1px;color:#c5c7cd}
+.profile-nav{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:30px;padding-top:20px;border-top:1px solid var(--line)}
+.profile-nav button{background:transparent;border:1px solid var(--line);color:white;padding:13px 15px;font-size:10px;font-weight:800;letter-spacing:1px;cursor:pointer}
+.profile-nav button:hover{border-color:var(--yellow);color:var(--yellow)}
+@media(max-width:900px){
+ .nav-links{gap:16px}.nav-links a{font-size:9px}
+ .hero-visual{right:-4%;width:55%;opacity:.7}.hero-copy{max-width:620px}
+ .roster-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .player-card{height:450px}
+ .history-grid{gap:35px}
+}
+@media(max-width:650px){
+ .container{width:calc(100% - 36px)}
+ .section{padding:82px 0}
+ header{height:66px}
+ .nav-year{display:none}
+ .menu-toggle{display:block}
+ .nav-links{display:none;position:absolute;top:65px;left:0;right:0;background:rgba(8,9,11,.97);border-bottom:1px solid var(--line);padding:20px 24px 25px;flex-direction:column;align-items:flex-start;gap:22px}
+ .nav-links.open{display:flex}
+ .nav-links a{font-size:12px}
+ .hero{min-height:740px;height:100svh}
+ .hero:before{background:linear-gradient(90deg,rgba(8,9,11,.97),rgba(8,9,11,.72)),linear-gradient(0deg,#08090b,transparent 50%)}
+ .hero-visual{right:-25%;top:17%;width:100%;height:48%;opacity:.42}
+ .hero-copy{padding-top:35px}
+ .hero h1{font-size:clamp(72px,17vw,110px);margin:30px 0 22px}
+ .hero-sub{max-width:340px}
+ .hero-stats{gap:22px;margin-top:35px}
+ .hero-stat strong{font-size:29px}
+ .hero-stat span{font-size:8px}
+ .hero-index{bottom:20px;align-items:flex-end}
+ .hero-index .right{display:none}
+ .scroll-cue{display:none}
+ .section-head{display:block;margin-bottom:35px}
+ .section-number{font-size:70px;margin-top:25px}
+ .history-grid{grid-template-columns:1fr;gap:25px}
+ .history-big{font-size:clamp(105px,30vw,160px)}
+ .fact-strip{grid-template-columns:1fr}
+ .fact,.fact:not(:first-child){padding:18px 0;border-right:0;border-bottom:1px solid var(--line)}
+ .fact:last-child{border-bottom:0}
+ .milestones{margin-top:55px}
+ .milestones:before{left:5px;right:auto;top:0;bottom:0;width:1px;height:auto}
+ .milestone-grid{grid-template-columns:1fr;gap:22px}
+ .milestone{padding:0 0 0 30px}
+ .milestone:before{top:4px;left:0}
+ .roster-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .player-card{height:390px;min-height:350px}
+ .player-info{padding:20px 12px 14px}
+ .player-info h3{font-size:33px}
+ .player-info p{font-size:9px}
+ .player-no{left:12px;top:12px;font-size:28px}
+ .player-role{right:10px;top:15px}
+ .timeline-track{grid-template-columns:1fr;gap:24px;margin-top:35px}
+ .timeline-track:before{left:21px;right:auto;top:10px;bottom:10px;width:1px;height:auto}
+ .stage{display:grid;grid-template-columns:44px 1fr;column-gap:16px}
+ .stage-marker{grid-row:span 3}
+ .stage small{margin-top:3px}
+ .stage h3{margin:6px 0;font-size:22px}
+ .stage p{margin-bottom:0;max-width:none}
+ .stage-detail{grid-template-columns:1fr;padding:22px;gap:20px}
+ .score{font-size:56px}
+ .final-match{gap:13px;flex-wrap:wrap;margin:28px 0}
+ .team{font-size:clamp(26px,7vw,40px)}
+ .final-score{font-size:54px}
+ .final-card:after{font-size:130px;bottom:-25px}
+ .legacy{min-height:480px}
+ .profile-hero{min-height:260px;padding:25px}
+ .profile-tag{left:25px;top:20px}
+ .profile-hero h2{font-size:70px}
+ .profile-body{padding:20px}
+}
+@media(max-width:390px){
+ .roster-grid{grid-template-columns:1fr}
+ .player-card{height:450px}
+ .hero h1{font-size:68px}
+ .hero-actions .btn{width:100%}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+ .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<div class="noise" aria-hidden="true"></div>
+
+<header id="header">
+  <div class="container nav">
+    <a class="brand" href="#home" aria-label="NAVI 2021 — на главную">
+      <span class="brand-mark">N</span>
+      <span>NAVI <small>THE GOLDEN ERA</small></span>
+    </a>
+    <nav class="nav-links" id="navLinks" aria-label="Основная навигация">
+      <a href="#history">ИСТОРИЯ</a>
+      <a href="#roster">СОСТАВ</a>
+      <a href="#timeline">ПУТЬ К ТИТУЛУ</a>
+      <a href="#legacy">НАСЛЕДИЕ</a>
+    </nav>
+    <div class="nav-year">/ 2021</div>
+    <button class="menu-toggle" id="menuToggle" aria-label="Открыть меню" aria-expanded="false">☰</button>
+  </div>
+</header>
+
+<main>
+<section class="hero" id="home">
+  <div class="hero-watermark" aria-hidden="true">NAVI</div>
+  <div class="hero-visual" id="heroVisual" aria-hidden="true">
+    <div class="hero-orbit"></div>
+    <div class="hero-emblem">
+      <svg viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M150 12L280 75V177L150 288L20 177V75L150 12Z" stroke="#FFF000" stroke-width="1.5" opacity=".7"/>
+        <path d="M150 35L258 87V166L150 260L42 166V87L150 35Z" stroke="white" stroke-opacity=".22"/>
+        <path d="M72 93H119L180 177V93H226V213H181L118 130V213H72V93Z" fill="#FFF000"/>
+        <path d="M52 73H246M52 231H246" stroke="white" stroke-opacity=".25"/>
+        <circle cx="150" cy="150" r="137" stroke="#FFF000" stroke-opacity=".15" stroke-dasharray="2 9"/>
+      </svg>
+    </div>
+    <div class="hero-glow"></div>
+  </div>
+  <div class="container hero-inner">
+    <div class="hero-copy">
+      <div class="hero-label reveal"><span class="live-dot"></span> COUNTER-STRIKE: GLOBAL OFFENSIVE / SEASON 2021</div>
+      <h1 class="reveal"><span>THE</span><span class="outline">GOLDEN</span><span>ERA<span class="yellow">.</span></span></h1>
+      <p class="hero-sub reveal">Пять игроков. Одна команда. История, которую помнят. Вспоминаем сезон, когда NAVI подняли главный трофей CS:GO.</p>
+      <div class="hero-actions reveal">
+        <a class="btn" href="#roster">ИЗУЧИТЬ СОСТАВ <span class="arrow">↘</span></a>
+        <a class="btn secondary" href="#timeline">ПУТЬ К ТИТУЛУ <span class="arrow">→</span></a>
+      </div>
+      <div class="hero-stats reveal">
+        <div class="hero-stat"><strong>2021</strong><span>ЗОЛОТОЙ СЕЗОН</span></div>
+        <div class="hero-stat"><strong>2:0</strong><span>ФИНАЛ MAJOR</span></div>
+        <div class="hero-stat"><strong>5/5</strong><span>ЧЕМПИОНСКИЙ СОСТАВ</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-cue">SCROLL TO EXPLORE</div>
+  <div class="container hero-index">
+    <div class="left"><span class="line"></span><span class="mono">STOCKHOLM 2021 / MAJOR CHAMPIONS</span></div>
+    <div class="right mono">NATUS VINCERE — DIGITAL ARCHIVE № 021</div>
+  </div>
+</section>
+
+<section class="section history" id="history">
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow">01 / THE YEAR</div>
+        <h2>ГОД, КОГДА NAVI<br>ПОКОРИЛИ <span class="yellow">МИР</span></h2>
+        <p class="section-intro">Сезон, в котором командная система, индивидуальное мастерство и вера в победу соединились в одну историю.</p>
+      </div>
+      <div class="section-number">01</div>
+    </div>
+    <div class="history-grid reveal">
+      <div class="history-big">NAVI<span>MAJOR CHAMPIONS / 2021</span></div>
+      <div class="history-copy">
+        <div class="eyebrow">STOCKHOLM, SWEDEN</div>
+        <h3 style="font:800 31px var(--display);text-transform:uppercase;margin:18px 0">Момент, который стал историей.</h3>
+        <p>7 ноября 2021 года NAVI победили G2 Esports в финале PGL Major Stockholm со счётом 2:0. Команда завершила весь турнир без проигранной карты и завоевала титул чемпиона Major.</p>
+        <p>s1mple получил награду MVP турнира. В течение года команда также выиграла IEM Cologne и ESL Pro League Season 14, а в октябре оформила Intel Grand Slam III.</p>
+        <a class="btn secondary" href="https://navi.gg/en/tournaments/pgl-major-stockholm/matches" target="_blank" rel="noopener">АРХИВ ТУРНИРА ↗</a>
+      </div>
+    </div>
+    <div class="fact-strip reveal">
+      <div class="fact"><strong>2 : 0</strong><span>Финал против G2 Esports</span></div>
+      <div class="fact"><strong>0</strong><span>Проигранных карт на Major</span></div>
+      <div class="fact"><strong>MVP</strong><span>s1mple — лучший игрок турнира</span></div>
+    </div>
+    <div class="milestones reveal">
+      <div class="eyebrow" style="margin-bottom:30px">СЕЗОН / КЛЮЧЕВЫЕ МОМЕНТЫ</div>
+      <div class="milestone-grid">
+        <article class="milestone"><time>18 JUL 2021</time><h3>IEM Cologne</h3><p>NAVI обыграли G2 Esports 3:0 в финале и выиграли чемпионский титул.</p></article>
+        <article class="milestone"><time>12 SEP 2021</time><h3>ESL Pro League</h3><p>Победа над Team Vitality со счётом 3:2 в финале сезона.</p></article>
+        <article class="milestone"><time>21 OCT 2021</time><h3>Intel Grand Slam</h3><p>NAVI завершили серию из четырёх побед на турнирах ESL Pro Tour и выиграли Intel Grand Slam III.</p></article>
+        <article class="milestone"><time>07 NOV 2021</time><h3>PGL Major</h3><p>Финал со счётом 2:0 против G2. NAVI — чемпионы Stockholm Major.</p></article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section roster" id="roster">
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow">02 / THE ROSTER</div>
+        <h2>ПЯТЬ <span class="yellow">ЛЕГЕНД</span></h2>
+        <p class="section-intro">Пять разных характеров и стилей. Нажми на игрока, чтобы открыть персональный профиль.</p>
+      </div>
+      <div class="section-number">05</div>
+    </div>
+    <div class="roster-topline reveal"><span>CHAMPIONSHIP LINE-UP / 2021</span><span>SELECT PLAYER ↗</span></div>
+    <div class="roster-grid" id="rosterGrid"></div>
+    <p class="roster-note reveal">Портреты не встроены в этот файл. Чтобы добавить свои изображения, помести разрешённые к использованию фотографии в папку <code>images</code> и укажи пути в массиве <code>players</code> в конце файла. Пока фотографии не добавлены, сайт показывает стилизованные графические заглушки.</p>
+  </div>
+</section>
+
+<section class="section timeline-section" id="timeline">
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow">03 / THE ROAD</div>
+        <h2>ПУТЬ К <span class="yellow">ТИТУЛУ</span></h2>
+        <p class="section-intro">Выбери этап, чтобы увидеть краткую информацию о плей-офф PGL Major Stockholm 2021.</p>
+      </div>
+      <div class="section-number">03</div>
+    </div>
+    <div class="timeline-track reveal" id="timelineTrack"></div>
+    <div class="stage-detail reveal" id="stageDetail" aria-live="polite"></div>
+    <div class="final-card reveal">
+      <div class="final-label">07 NOVEMBER 2021 / GRAND FINAL</div>
+      <div class="final-match">
+        <div class="team">NAVI<span>THE CHAMPIONS</span></div>
+        <div class="final-score">2 : 0</div>
+        <div class="team">G2<span>THE FINALISTS</span></div>
+      </div>
+      <div class="final-foot">PGL Major Stockholm 2021 · NAVI выиграли финал и завершили турнир без проигранных карт.</div>
+    </div>
+  </div>
+</section>
+
+<section class="section legacy" id="legacy">
+  <div class="container legacy-content reveal">
+    <div class="eyebrow">04 / THE LEGACY</div>
+    <h2>ЛЕГЕНДЫ НЕ<br>ИСЧЕЗАЮТ<span class="yellow">.</span><br><span style="color:rgba(255,255,255,.45)">ОНИ ОСТАЮТСЯ<br>В ИСТОРИИ.</span></h2>
+    <p>Один сезон. Главный трофей. Пять игроков, чьи имена навсегда связаны с золотой эпохой NAVI в CS:GO. Это история не только о победе — это история о команде.</p>
+    <a class="btn" href="#roster">ПЕРЕСМОТРЕТЬ СОСТАВ <span class="arrow">↗</span></a>
+  </div>
+</section>
+
+<section class="sources">
+  <div class="container">
+    <details>
+      <summary>ИСТОЧНИКИ И ИСТОРИЧЕСКИЕ ДАННЫЕ +</summary>
+      <div class="source-links">
+        <a href="https://navi.gg/en/tournaments/pgl-major-stockholm/matches" target="_blank" rel="noopener">NAVI — PGL Major match archive ↗</a>
+        <a href="https://navi.gg/en/publications/8615-cs-iem-cologne-champs" target="_blank" rel="noopener">NAVI — IEM Cologne 2021 ↗</a>
+        <a href="https://navi.gg/en/publications/8919-cs-epl-14-champions" target="_blank" rel="noopener">NAVI — ESL Pro League S14 ↗</a>
+        <a href="https://esl.com/article/natus-vincere-complete-intel-grand-slam-iii/" target="_blank" rel="noopener">ESL — Intel Grand Slam III ↗</a>
+        <a href="https://www.hltv.org/news/33151/top-20-players-of-2021-s1mple-1" target="_blank" rel="noopener">HLTV — s1mple #1 in 2021 ↗</a>
+      </div>
+    </details>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container footer-inner">
+    <div><strong>NAVI / THE GOLDEN ERA</strong> — FAN-MADE DIGITAL ARCHIVE</div>
+    <div>НЕОФИЦИАЛЬНЫЙ ФАН-САЙТ · CS:GO · 2021</div>
+    <div>DESIGNED FOR THE HISTORY.</div>
+  </div>
+</footer>
+
+<div class="modal" id="playerModal" role="dialog" aria-modal="true" aria-labelledby="profileName">
+  <div class="modal-panel">
+    <button class="modal-close" id="modalClose" aria-label="Закрыть профиль">×</button>
+    <div id="profileContent"></div>
+  </div>
+</div>
+
+<script>
+/* Изображения: укажи локальные пути к фотографиям, если у тебя есть право их использовать. */
+const players = [
+  {
+    nick:"s1mple",name:"Oleksandr Kostyliev",country:"UKRAINE",
+    role:"STAR AWPer / RIFLER",number:"01",
+    summary:"Индивидуальная звезда чемпионского состава и MVP PGL Major Stockholm 2021.",
+    style:"Агрессивная AWP-игра, механический уровень и способность создавать решающие моменты даже в сложных раундах.",
+    impact:"Главная индивидуальная ударная сила состава. Его пространство для инициативы помогало NAVI превращать отдельные дуэли в преимущество команды.",
+    achievements:"MVP PGL Major Stockholm 2021 · №1 в рейтинге HLTV Top 20 за 2021 год.",
+    moment:"Финал Stockholm Major — чемпионский матч, завершивший турнир без проигранных карт.",
+    image:"images/s1mple.jpg"
+  },
+  {
+    nick:"electroNic",name:"Denis Sharipov",country:"RUSSIA",
+    role:"RIFLER",number:"02",
+    summary:"Один из ключевых рифлеров состава, сочетавший огневую мощь с гибкостью в командной игре.",
+    style:"Уверенная стрельба, способность брать инициативу и адаптироваться к ситуации по ходу раунда.",
+    impact:"Помогал связывать индивидуальные действия звёзд состава с командной структурой и темпом игры.",
+    achievements:"Чемпион PGL Major Stockholm 2021 · №7 в рейтинге HLTV Top 20 за 2021 год.",
+    moment:"Плей-офф Stockholm Major — часть состава, который прошёл к финалу без проигранных карт.",
+    image:"images/electronic.jpg"
+  },
+  {
+    nick:"Boombl4",name:"Kirill Mikhailov",country:"RUSSIA",
+    role:"IGL / CAPTAIN",number:"03",
+    summary:"Капитан чемпионского состава, отвечавший за руководство командой в игре.",
+    style:"Активное принятие решений, координация и готовность задавать команде темп.",
+    impact:"В роли IGL помогал объединять индивидуальные таланты в согласованную систему решений и командных действий.",
+    achievements:"Чемпион PGL Major Stockholm 2021 · капитан NAVI в чемпионском составе.",
+    moment:"Финальная серия против G2 — командная победа 2:0 на главной сцене турнира.",
+    image:"images/boombl4.jpg"
+  },
+  {
+    nick:"Perfecto",name:"Ilya Zalutskiy",country:"RUSSIA",
+    role:"SUPPORT / CLUTCH",number:"04",
+    summary:"Командный игрок, чья работа с ресурсами и сложными игровыми ситуациями дополняла звёзд состава.",
+    style:"Терпеливое принятие решений, полезные размены и умение сохранять хладнокровие в напряжённых раундах.",
+    impact:"Вносил вклад в командную надёжность, поддерживая структуру раунда и помогая партнёрам реализовывать преимущество.",
+    achievements:"Чемпион PGL Major Stockholm 2021 в составе NAVI.",
+    moment:"Финал Major — важная часть общего командного выступления, завершившегося со счётом 2:0.",
+    image:"images/perfecto.jpg"
+  },
+  {
+    nick:"b1t",name:"Valerii Vakhovskyi",country:"UKRAINE",
+    role:"RIFLER",number:"05",
+    summary:"Молодой талант, который стал полноценной частью чемпионского состава в сезоне 2021.",
+    style:"Чистая стрельба, уверенные дуэли и зрелые решения на фоне высокого турнирного давления.",
+    impact:"Его огневая мощь и уверенность расширяли возможности NAVI в перестрелках и командных выходах.",
+    achievements:"Чемпион PGL Major Stockholm 2021 · №9 в рейтинге HLTV Top 20 за 2021 год.",
+    moment:"Дебютный сезон на высшем уровне завершился титулом Major вместе с NAVI.",
+    image:"images/b1t.jpg"
+  }
+];
+
+const stages = [
+  {id:"01",date:"5 NOVEMBER",name:"Четвертьфинал",opponent:"Team Vitality",score:"2 : 0",detail:"NAVI победили Team Vitality и прошли в полуфинал. Команда продолжила плей-офф без проигранных карт."},
+  {id:"02",date:"6 NOVEMBER",name:"Полуфинал",opponent:"Gambit Esports",score:"2 : 0",detail:"NAVI обыграли Gambit Esports со счётом 2:0 и заработали место в финале Stockholm Major."},
+  {id:"03",date:"7 NOVEMBER",name:"Гранд-финал",opponent:"G2 Esports",score:"2 : 0",detail:"В финале NAVI победили G2 Esports со счётом 2:0, завершив весь турнир без проигранных карт и завоевав титул Major."}
+];
+
+const $ = (selector, root=document) => root.querySelector(selector);
+const $$ = (selector, root=document) => [...root.querySelectorAll(selector)];
+const rosterGrid = $("#rosterGrid");
+const modal = $("#playerModal");
+const profileContent = $("#profileContent");
+let currentPlayer = 0;
+let previousFocus = null;
+
+function renderRoster(){
+  rosterGrid.innerHTML = players.map((p,i)=>`
+    <article class="player-card" role="button" tabindex="0" aria-label="Открыть профиль ${p.nick}" data-player="${i}" style="--glow:${["rgba(255,240,0,.2)","rgba(180,160,0,.18)","rgba(255,255,255,.12)","rgba(255,240,0,.12)","rgba(255,240,0,.19)"][i]}">
+      <span class="player-no">${p.number}</span>
+      <span class="player-role">${p.role}</span>
+      <div class="player-portrait">
+        ${p.image
+          ? `<img src="${p.image}" alt="Портрет ${p.nick}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="portrait-placeholder" style="display:none">${p.nick.slice(0,1).toUpperCase()}</div>`
+          : `<div class="portrait-placeholder">${p.nick.slice(0,1).toUpperCase()}</div>`}
+      </div>
+      <div class="player-info">
+        <div class="small">NAVI / 2021</div>
+        <h3>${p.nick}</h3>
+        <p>${p.name}</p>
+        <div class="card-open"><span>ОТКРЫТЬ ПРОФИЛЬ</span><span>↗</span></div>
+      </div>
+    </article>`).join("");
+}
+function openProfile(index, trigger){
+  currentPlayer = (index + players.length) % players.length;
+  previousFocus = trigger || document.activeElement;
+  const p = players[currentPlayer];
+  profileContent.innerHTML = `
+    <div class="profile-hero" data-number="${p.number}">
+      <div>
+        <div class="profile-tag">${p.country} / ${p.role} / NAVI 2021</div>
+        <h2 id="profileName">${p.nick}</h2>
+        <div class="full-name">${p.name}</div>
+      </div>
+    </div>
+    <div class="profile-body">
+      <div class="eyebrow">PLAYER FILE / ${p.number}</div>
+      <p style="font-size:16px;color:#f5f5f5;margin-top:15px">${p.summary}</p>
+      <div class="profile-tags"><span>${p.country}</span><span>${p.role}</span><span>PGL MAJOR CHAMPION</span></div>
+      <h3>Игровой стиль</h3><p>${p.style}</p>
+      <h3>Роль в команде</h3><p>${p.impact}</p>
+      <h3>Достижения</h3><p>${p.achievements}</p>
+      <h3>Избранный момент</h3><p>${p.moment}</p>
+      <div class="profile-tags"><span>Источник состава: <a href="https://navi.gg/en/tournaments/pgl-major-stockholm/matches" target="_blank" rel="noopener">NAVI / PGL ↗</a></span><span>Без неподтверждённой статистики</span></div>
+      <div class="profile-nav">
+        <button type="button" id="prevPlayer">← ПРЕДЫДУЩИЙ ИГРОК</button>
+        <button type="button" id="backRoster">ВЕРНУТЬСЯ К СОСТАВУ</button>
+        <button type="button" id="nextPlayer">СЛЕДУЮЩИЙ ИГРОК →</button>
+      </div>
+    </div>`;
+  modal.classList.add("open");
+  document.body.classList.add("modal-open");
+  $("#modalClose").focus();
+  $("#prevPlayer").addEventListener("click",()=>openProfile(currentPlayer-1, $("#prevPlayer")));
+  $("#nextPlayer").addEventListener("click",()=>openProfile(currentPlayer+1, $("#nextPlayer")));
+  $("#backRoster").addEventListener("click",closeProfile);
+}
+function closeProfile(){
+  modal.classList.remove("open");
+  document.body.classList.remove("modal-open");
+  if(previousFocus && typeof previousFocus.focus==="function") previousFocus.focus();
+}
+rosterGrid.addEventListener("click",e=>{
+  const card=e.target.closest("[data-player]");
+  if(card) openProfile(Number(card.dataset.player),card);
+});
+rosterGrid.addEventListener("keydown",e=>{
+  if((e.key==="Enter"||e.key===" ")&&e.target.matches("[data-player]")){
+    e.preventDefault();openProfile(Number(e.target.dataset.player),e.target);
+  }
+});
+$("#modalClose").addEventListener("click",closeProfile);
+modal.addEventListener("click",e=>{if(e.target===modal)closeProfile()});
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape"&&modal.classList.contains("open"))closeProfile();
+  if(e.key==="Tab"&&modal.classList.contains("open")){
+    const focusable=$$("button,a,[tabindex='0']",modal).filter(el=>!el.disabled&&el.offsetParent!==null);
+    if(!focusable.length)return;
+    const first=focusable[0],last=focusable[focusable.length-1];
+    if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}
+    else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
+  }
+});
+
+function renderTimeline(){
+  $("#timelineTrack").innerHTML=stages.map((s,i)=>`
+    <button class="stage ${i===0?'active':''}" data-stage="${i}" aria-pressed="${i===0}">
+      <span class="stage-marker">${s.id}</span>
+      <small>${s.date}</small><h3>${s.name}</h3><p>${s.opponent}</p>
+    </button>`).join("");
+  updateStage(0);
+}
+function updateStage(index){
+  const s=stages[index];
+  $$(".stage").forEach((el,i)=>{el.classList.toggle("active",i===index);el.setAttribute("aria-pressed",String(i===index))});
+  $("#stageDetail").innerHTML=`
+    <div><div class="eyebrow">${s.date} / PLAYOFF</div><h3>${s.name} — ${s.opponent}</h3><p>${s.detail}</p></div>
+    <div class="score">${s.score}</div>`;
+}
+$("#timelineTrack").addEventListener("click",e=>{
+  const stage=e.target.closest("[data-stage]");
+  if(stage)updateStage(Number(stage.dataset.stage));
+});
+
+const menuToggle=$("#menuToggle"), navLinks=$("#navLinks");
+menuToggle.addEventListener("click",()=>{
+  const open=navLinks.classList.toggle("open");
+  menuToggle.setAttribute("aria-expanded",String(open));
+  menuToggle.setAttribute("aria-label",open?"Закрыть меню":"Открыть меню");
+  menuToggle.textContent=open?"×":"☰";
+});
+$$(".nav-links a").forEach(a=>a.addEventListener("click",()=>{
+  navLinks.classList.remove("open");menuToggle.setAttribute("aria-expanded","false");menuToggle.textContent="☰";
+}));
+
+function onScroll(){
+  const scrollTop=window.scrollY;
+  const max=document.documentElement.scrollHeight-window.innerHeight;
+  $("#progress").style.width=(max>0?scrollTop/max*100:0)+"%";
+  $("#header").classList.toggle("scrolled",scrollTop>30);
+}
+window.addEventListener("scroll",onScroll,{passive:true});
+onScroll();
+
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){entry.target.classList.add("visible");observer.unobserve(entry.target)}
+  });
+},{threshold:.12});
+$$(".reveal").forEach(el=>observer.observe(el));
+
+const navObserver=new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      $$(".nav-links a").forEach(a=>a.classList.toggle("active",a.getAttribute("href")==="#"+entry.target.id));
+    }
+  });
+},{rootMargin:"-30% 0px -60% 0px"});
+["history","roster","timeline","legacy"].forEach(id=>navObserver.observe(document.getElementById(id)));
+
+if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches && window.matchMedia("(hover: hover)").matches){
+  const hero=$("#heroVisual");
+  window.addEventListener("pointermove",e=>{
+    const x=(e.clientX/window.innerWidth-.5)*8;
+    const y=(e.clientY/window.innerHeight-.5)*8;
+    hero.style.transform=`translate(${x}px,${y}px)`;
+  },{passive:true});
+}
+
+renderRoster();
+renderTimeline();
+</script>
+</body>
+</html>
